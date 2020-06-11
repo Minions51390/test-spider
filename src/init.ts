@@ -1,28 +1,58 @@
-import { fetchData } from './fetch-data';
-// import { writeFileSync, readFileSync } from 'fs';
-// import { resolve } from 'path';
+import { writeFile, readFileSync, statSync } from 'fs';
+import { resolve } from 'path';
+import { fetchData } from "./fetch-data";
+import { unique, diff, logFn } from "../util/tools";
+interface ProcessOptions { }
 
-interface ProcessOptions{}
+interface PidInf {
+    idList: string[]
+}
 
 export async function init(options?: ProcessOptions) {
-    let htmlContent = await fetchData();
-    
-    // start your code here
-    console.log(htmlContent);
-
-    if (false) {
-        getcha();
+    const outputFile: string = resolve(__dirname, '../data/output.data');
+    const allIdFile: string = resolve(__dirname, '../data/allId.data');
+    const readLogFile: string = resolve(__dirname, '../log/readErrLog.data');
+    const writeLogFile: string = resolve(__dirname, '../log/writeErrLog.data');
+    const reg: RegExp = /m[0-9]+/g;
+    let htmlContent: string = await fetchData();
+    let pidList: PidInf = {
+        idList: unique(htmlContent.match(reg))
+    };
+    let oldIdList: PidInf = {
+        idList: []
+    }
+    try {
+        oldIdList = JSON.parse(readFileSync(allIdFile, 'utf8'));
+    } catch (e) {
+        logFn({
+            logFilePath: readLogFile,
+            errMsg: `---ERROR---: errWay: read; readfailFile: ${allIdFile}; errMsg${e.toString()}`
+        });
+        writeFile(allIdFile, '', function (err) {
+            err && logFn({
+                logFilePath: writeLogFile,
+                errMsg: `---ERROR---: errWay: write; writefailFile: ${allIdFile}; errMsg${err.toString()}`
+            });
+        });
+    }
+    let newIdList: PidInf = {
+        idList: unique([...pidList.idList, ...oldIdList.idList])
+    }
+    if (newIdList.idList.length > oldIdList.idList.length) {
+        console.log("发现了新增内容！");
+        writeFile(outputFile, diff(newIdList.idList, oldIdList.idList).join(' '), function (err) {
+            err && logFn({
+                logFilePath: writeLogFile,
+                errMsg: `---ERROR---: errWay: write; writefailFile: ${outputFile}; errMsg${err.toString()}`
+            });
+        });
+        writeFile(allIdFile, JSON.stringify(newIdList), function (err) {
+            err && logFn({
+                logFilePath: writeLogFile,
+                errMsg: `---ERROR---: errWay: write; writefailFile: ${allIdFile}; errMsg${err.toString()}`
+            });
+        });
     } else {
-        console.log('未能找到！');
+        console.log("未能找到新增内容！");
     }
 }
-
-function getcha() {
-    console.log('发现了新增内容！');
-}
-
-// 以下是读写文件示例，__dirname指的是当前文件的工作目录
-// writeFileSync('../log/test.log', '测试文本');
-// const txt = readFileSync('.../log/test.log');
-// const filePath = resolve(__dirname, '../log/test.log');
-// console.log(filePath, txt);
