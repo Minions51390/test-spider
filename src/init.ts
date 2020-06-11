@@ -1,22 +1,20 @@
-import { writeFile, readFileSync, statSync } from 'fs';
+import { writeFile, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { fetchData } from "./fetch-data";
 import { unique, diff, logFn } from "../util/tools";
+import { staticConf, spiderUrl } from "../config/staticConf";
 interface ProcessOptions { }
 
 interface PidInf {
     idList: string[]
 }
 
-export async function init(options?: ProcessOptions) {
-    const outputFile: string = resolve(__dirname, '../data/output.data');
-    const allIdFile: string = resolve(__dirname, '../data/allId.data');
-    const readLogFile: string = resolve(__dirname, '../log/readErrLog.data');
-    const writeLogFile: string = resolve(__dirname, '../log/writeErrLog.data');
+export const init = async (options?: ProcessOptions) => {
+    const { outputFile, allIdFile, readLogFile, writeLogFile } = staticConf;
     const reg: RegExp = /m[0-9]+/g;
-    let htmlContent: string = await fetchData();
+    let htmlContent: string = await fetchData(spiderUrl);
     let pidList: PidInf = {
-        idList: unique(htmlContent.match(reg))
+        idList: unique(htmlContent.match(reg) || [])
     };
     let oldIdList: PidInf = {
         idList: []
