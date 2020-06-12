@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-export const spiderUrl: string = 'http://localhost:300';
 
 interface StaticConfInf {
     outputFile: string
@@ -8,7 +7,7 @@ interface StaticConfInf {
     writeLogFile: string
     fetchLogFile: string
 }
-
+export const spiderUrl: string = 'http://localhost:3000';
 export const staticConf: StaticConfInf = {
     outputFile: resolve(__dirname, '../data/output.data'),
     allIdFile: resolve(__dirname, '../data/allId.data'),
