@@ -24,12 +24,12 @@ export const init = async (options?: ProcessOptions) => {
     } catch (e) {
         logFn({
             logFilePath: readLogFile,
-            errMsg: `---ERROR---: errWay: read; readfailFile: ${allIdFile}; errMsg${e.toString()}`
+            errMsg: `---ERROR---: errWay: read; readfailFile: ${allIdFile}; errMsg${e.toString()} \r\n`
         });
         writeFile(allIdFile, '', function (err) {
             err && logFn({
                 logFilePath: writeLogFile,
-                errMsg: `---ERROR---: errWay: write; writefailFile: ${allIdFile}; errMsg${err.toString()}`
+                errMsg: `---ERROR---: errWay: write; writefailFile: ${allIdFile}; errMsg${err.toString()} \r\n`
             });
         });
     }
@@ -41,13 +41,13 @@ export const init = async (options?: ProcessOptions) => {
         writeFile(outputFile, diff(newIdList.idList, oldIdList.idList).join(' '), function (err) {
             err && logFn({
                 logFilePath: writeLogFile,
-                errMsg: `---ERROR---: errWay: write; writefailFile: ${outputFile}; errMsg${err.toString()}`
+                errMsg: `---ERROR---: errWay: write; writefailFile: ${outputFile}; errMsg${err.toString()} \r\n`
             });
         });
         writeFile(allIdFile, JSON.stringify(newIdList), function (err) {
             err && logFn({
                 logFilePath: writeLogFile,
-                errMsg: `---ERROR---: errWay: write; writefailFile: ${allIdFile}; errMsg${err.toString()}`
+                errMsg: `---ERROR---: errWay: write; writefailFile: ${allIdFile}; errMsg${err.toString()} \r\n`
             });
         });
     } else {

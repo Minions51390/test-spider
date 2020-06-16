@@ -2,7 +2,7 @@ import fetch from 'xfetch';
 import { logFn } from "../util/tools";
 import { staticConf } from "../config/staticConf";
 const { fetchLogFile } = staticConf;
-
+// 发送请求
 const fetchX = async (url: string) => {
     return fetch(`${url}`, {
         "headers": {
@@ -23,13 +23,14 @@ const fetchX = async (url: string) => {
     });
 }
 
+// 对请求错误进行拦截
 export const fetchData = async (url: string) => {
     return fetchX(url)
         .then((data) => data)
         .catch(err => {
             logFn({
                 logFilePath: fetchLogFile,
-                errMsg: `---ERROR---: errWay: fetchData; errMsg${err.toString()}`
+                errMsg: `---ERROR---: errWay: fetchData; errMsg${err.toString()} \r\n`
             });
             return '抓取地址异常';
         });
