@@ -1,8 +1,8 @@
 import { writeFile, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { fetchData } from "./fetch-data";
-import { unique, diff, logFn } from "../util/tools";
-import { staticConf, spiderUrl } from "../config/staticConf";
+import { unique, diff, logFn } from "./util/tools";
+import { staticConf, spiderUrl } from "./config/staticConf";
 interface ProcessOptions { }
 
 interface PidInf {

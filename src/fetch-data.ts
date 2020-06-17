@@ -1,6 +1,6 @@
 import fetch from 'xfetch';
-import { logFn } from "../util/tools";
-import { staticConf } from "../config/staticConf";
+import { logFn } from "./util/tools";
+import { staticConf } from "./config/staticConf";
 const { fetchLogFile } = staticConf;
 // 发送请求
 const fetchX = async (url: string) => {
