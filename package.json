@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "test": "jest && npm run coverall",
+    "test": "jest",
     "build": "ts-node src/index.ts",
     "coverall": "cat coverage/lcov.info | coveralls"
   },

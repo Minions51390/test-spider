@@ -1,8 +1,16 @@
+/**
+ * @file: fetch-data.ts
+ * @description 获取接口数据
+ */
 import fetch from 'xfetch';
 import { logFn } from "./util/tools";
 import { staticConf } from "./config/staticConf";
 const { fetchLogFile } = staticConf;
-// 发送请求
+
+/**
+ * 异步请求
+ * @param url 请求地址
+ */
 const fetchX = async (url: string) => {
     return fetch(`${url}`, {
         "headers": {
@@ -23,7 +31,10 @@ const fetchX = async (url: string) => {
     });
 }
 
-// 对请求错误进行拦截
+/**
+ * 异常拦截
+ * @param url 请求地址
+ */
 export const fetchData = async (url: string) => {
     return fetchX(url)
         .then((data) => data)

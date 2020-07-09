@@ -1,31 +1,39 @@
-import { writeFile, readFileSync, existsSync, appendFile } from 'fs';
-import { resolve } from 'path';
-// 日志规范
-interface LogStat {
-    logFilePath: string
-    errMsg: string
-}
-// 数组去重
+/**
+ * @file: tools.ts
+ * @description 工具函数
+ */
+import { writeFileSync, existsSync, appendFileSync } from 'fs';
+import { LogStat } from '../interface/staticConf';
+
+/**
+ * 数组去重
+ * @param arr 被去重数组
+ */
 export const unique = (arr: string[]): string[] => {
     return arr.length > 0 ? Array.from(new Set(arr)) : [];
 }
-// 比较数组之间的差异
+
+/**
+ * 比较数组的差异
+ * @param mainArr 规范数组
+ * @param diffArr 差异数组
+ */
 export const diff = (mainArr: string[], diffArr: string[]): string[] => {
-    var newArr = [];
-    newArr = mainArr.filter(function (value: string) {
+    let newArr = [];
+    newArr = mainArr.filter((value: string) => {
         return diffArr.indexOf(value) === -1;
     });
     return newArr;
 }
-// 写入报错日志
+
+/**
+ * 写入错误信息
+ * @param stat 错误信息
+ */
 export const logFn = (stat: LogStat) => {
     if (existsSync(stat.logFilePath)) {
-        appendFile(stat.logFilePath, stat.errMsg, function (err) {
-            err && console.log(err);
-        });
+        appendFileSync(stat.logFilePath, stat.errMsg);
     } else {
-        writeFile(stat.logFilePath, stat.errMsg, function (err) {
-            err && console.log(err);
-        });
+        writeFileSync(stat.logFilePath, stat.errMsg);
     }
 }
